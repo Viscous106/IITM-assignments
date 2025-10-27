@@ -1,1 +1,23 @@
-/app/cron syntax/daily-update.yml
+name: Daily Update
+
+on:
+  schedule:
+    - cron: '30 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  daily-update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Commit with email 24f3003335@ds.study.iitm.ac.in
+        run: |
+          git config --global user.email "24f3003335@ds.study.iitm.ac.in"
+          git config --global user.name "DevSync Bot"
+          echo "Daily update - $(date)" >> README.md
+          git add README.md
+          git commit -m "Automated daily update"
+          git push
